@@ -13,9 +13,10 @@ name = "mini-redis-server"
 path = "src/bin/server.rs"
 
 
-
 [dependencies]
 tokio = { version = "1", features = ["full"] }
 mini-redis = "0.4"
 bytes = "1"
 atoi = "2.0.0"
+futures = "0.3"
+crossbeam = "*"
