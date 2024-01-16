@@ -1,7 +1,7 @@
 use std::env::current_dir;
+use std::process::exit;
 use clap::{Parser, Subcommand};
 use kvs::{KvsError, KvStore};
-use kvs::KvsError::{Io, KeyNotFound};
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -34,7 +34,7 @@ enum Commands {
 }
 
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> kvs::Result<()> {
     let cli = Cli::parse();
     let mut kvs = KvStore::open(current_dir()?)?;
     match cli.command {
@@ -44,11 +44,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Commands::Get { key } => {
             if let Some(ans) = kvs.get(key)? {
                 println!("{ans}");
+            } else {
+                println!("Key not found");
             }
         }
         Commands::Rm { key } => {
-            kvs.remove(key)?
+            match kvs.remove(key) {
+                Ok(()) => {}
+                Err(KvsError::KeyNotFound) => {
+                    println!("Key not found");
+                    exit(1);
+                }
+                Err(e) => { return Err(e); }
+            }
         }
+        _ => unreachable!(),
     };
     Ok(())
 }
