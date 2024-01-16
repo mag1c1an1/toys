@@ -89,6 +89,7 @@ impl KvStore {
         if let Command::Set { key, value } = cmd {
             self.inner.insert(key, value);
         }
+        self.compaction()?;
         Ok(())
     }
 
@@ -117,6 +118,24 @@ impl KvStore {
            self.inner.remove(&key);
         }
         Ok(())
+    }
+    fn compaction(&mut self) -> Result<()> {
+        fs::remove_file(&self.path)?;
+        let mut writer = BufWriter::new(OpenOptions::new()
+            .append(true)
+            .create(true)
+            .open(&self.path)?);
+        let mut m = BTreeMap::new();
+        for entry in &self.inner {
+            let cmd = Command::Set { key:entry.0.clone(), value:entry.1.clone() };
+            serde_json::to_writer(&mut writer, &cmd)?;
+            writer.flush()?;
+            if let Command::Set { key, value } = cmd {
+                m.insert(key, value);
+            }
+        }
+        self.inner = m;
+       Ok(())
     }
 }
 
