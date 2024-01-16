@@ -33,7 +33,7 @@ pub struct KvStore {
 
 impl KvStore {
     pub fn open(path: impl Into<PathBuf>) -> Result<Self> {
-        let mut path = path.into();
+        let path = path.into();
         fs::create_dir_all(&path)?;
 
         let mut readers = HashMap::new();
@@ -144,7 +144,7 @@ impl KvStore {
 }
 
 fn new_log_file(path: &Path, gen: u64, readers: &mut HashMap<u64, BufReaderWithPos<File>>) -> Result<BufWriterWithPos<File>> {
-    let path = log_path(&path, gen);
+    let path = log_path(path, gen);
     let writer = BufWriterWithPos::new(
         OpenOptions::new()
             .append(true)
@@ -245,7 +245,7 @@ struct BufReaderWithPos<R: Read + Seek> {
 
 impl<R: Read + Seek> BufReaderWithPos<R> {
     fn new(mut inner: R) -> Result<Self> {
-        let pos = inner.seek(SeekFrom::Current(0))?;
+        let pos = inner.stream_position()?;
         Ok(BufReaderWithPos {
             reader: BufReader::new(inner),
             pos,

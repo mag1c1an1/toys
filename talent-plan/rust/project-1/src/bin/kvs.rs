@@ -58,7 +58,6 @@ fn main() -> kvs::Result<()> {
                 Err(e) => { return Err(e); }
             }
         }
-        _ => unreachable!(),
     };
     Ok(())
 }
