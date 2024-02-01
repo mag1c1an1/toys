@@ -30,7 +30,7 @@ impl<T> List<T> {
         });
         self.head = Some(new_node)
     }
-    
+
     pub fn pop(&mut self) -> Option<T> {
         self.head.take().map(|n| {
             self.head = n.next;
@@ -110,8 +110,6 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 
 #[cfg(test)]
 mod test {
-    use std::vec;
-
     use super::*;
     #[test]
     fn basics() {
