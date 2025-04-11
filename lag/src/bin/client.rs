@@ -8,11 +8,11 @@ use anyhow::Result;
 use lag::Message;
 
 fn send_msg(msg: Message) -> Result<()> {
-    let addr = "127.0.0.1:33443";
+    let addr = "202.201.163.153:3000";
     let mut stream = TcpStream::connect(addr)?;
     let mut buf_writer = BufWriter::new(&mut stream);
     let s = ron::to_string(&msg)?;
-    buf_writer.write(s.as_bytes())?;
+    buf_writer.write_all(s.as_bytes())?;
     Ok(())
 }
 
