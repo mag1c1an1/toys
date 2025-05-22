@@ -19,6 +19,7 @@ use crate::{
     wal::Wal,
 };
 
+/// thread safe
 pub struct MemTable {
     pub(crate) map: Arc<SkipMap<KeyBytes, Bytes>>,
     wal: Option<Wal>,
