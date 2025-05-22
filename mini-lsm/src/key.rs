@@ -159,7 +159,10 @@ impl<'a> Key<&'a [u8]> {
     pub fn ts(&self) -> u64 {
         self.1
     }
+}
 
+#[cfg(test)]
+impl<'a> Key<&'a [u8]> {
     pub fn for_testing_key_ref(self) -> &'a [u8] {
         self.0
     }
