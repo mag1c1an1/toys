@@ -16,7 +16,6 @@ use crossbeam_skiplist::{
 
 /// thread safe
 pub struct MemTable {
-    // arc for iter
     pub(crate) map: SkipMap<KeyBytes, Bytes>,
     wal: Option<Wal>,
     id: usize,

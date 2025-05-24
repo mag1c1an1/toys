@@ -7,6 +7,7 @@ use bytes::{Buf, BufMut, Bytes};
 pub(crate) const SIZEOF_U16: usize = std::mem::size_of::<u16>();
 
 mod builder;
+pub use builder::BlockBuilder;
 mod iterator;
 
 /// A block is the smallest unit of read and caching in LSM tree.

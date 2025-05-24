@@ -55,6 +55,7 @@ impl Bloom {
         let checksum = crc32fast::hash(&buf[offset..]);
         buf.put_u32(checksum);
     }
+
     /// Decode a bloom filter
     pub fn decode(buf: &[u8]) -> Result<Self> {
         let checksum = (&buf[buf.len() - 4..buf.len()]).get_u32();

@@ -7,11 +7,15 @@ use std::{
 
 use anyhow::Result;
 use bytes::Bytes;
+use options::LsmStorageOptions;
 use parking_lot::{Mutex, RwLock};
 
 use crate::{
     block::Block, key, mem_table::MemTable, mvcc::LsmMvccInner, table::SsTable,
 };
+
+mod options;
+
 pub type BlockCache = moka::sync::Cache<(usize, usize), Arc<Block>>;
 pub struct MiniLsm {
     pub(crate) inner: Arc<LsmStorageInner>,
@@ -44,9 +48,6 @@ impl MiniLsm {
     //     todo!()
     // }
 }
-
-pub struct LsmStorageOptions {}
-impl LsmStorageOptions {}
 
 pub enum WriteBatchRecord<T: AsRef<[u8]>> {
     Put(T, T),

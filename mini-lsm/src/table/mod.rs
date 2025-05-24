@@ -4,7 +4,6 @@
 
 use anyhow::Result;
 use bloom::Bloom;
-use bytes::Buf;
 use std::{fs::File, path::Path, sync::Arc};
 
 use crate::{
@@ -92,22 +91,27 @@ impl SsTable {
         self.block_meta.len()
     }
 
+    /// Get first key in this sstable
     pub fn first_key(&self) -> &KeyBytes {
         &self.first_key
     }
 
+    /// Get last key in this sstable
     pub fn last_key(&self) -> &KeyBytes {
         &self.last_key
     }
 
+    /// size of this sstable
     pub fn table_size(&self) -> u64 {
         self.file.1
     }
 
+    /// id of this sstable
     pub fn sst_id(&self) -> usize {
         self.id
     }
 
+    /// max ts of this sstable
     pub fn max_ts(&self) -> u64 {
         self.max_ts
     }
@@ -122,8 +126,22 @@ pub struct BlockMeta {
     /// The last key of the data block.
     pub last_key: KeyBytes,
 }
-impl BlockMeta {}
+impl BlockMeta {
+    /// encode block meta to a buffer
+    pub fn encode_block_meta(
+        block_meta: &[BlockMeta],
+        max_ts: u64,
+        buf: &mut Vec<u8>,
+    ) {
+        todo!()
+    }
+    /// decode block meta from a buffer
+    pub fn decode_block_meta(mut buf: &[u8]) -> Result<(Vec<BlockMeta>, u64)> {
+        todo!()
+    }
+}
 
+/// A file object
 pub struct FileObject(Option<File>, u64);
 
 impl FileObject {
@@ -137,11 +155,14 @@ impl FileObject {
         ))
     }
 
-    pub fn open(path: &Path) -> Result<Self> {
+    /// open file object
+    pub fn open(path: impl AsRef<Path>) -> Result<Self> {
         let file = File::options().read(true).write(false).open(path)?;
         let size = file.metadata()?.len();
         Ok(FileObject(Some(file), size))
     }
+
+    /// read `len`` bytes from `offset` in file
     pub fn read(&self, offset: u64, len: u64) -> Result<Vec<u8>> {
         use std::os::unix::fs::FileExt;
         let mut data = vec![0; len as usize];
@@ -152,6 +173,7 @@ impl FileObject {
         Ok(data)
     }
 
+    /// size of file
     pub fn size(&self) -> u64 {
         self.1
     }

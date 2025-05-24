@@ -28,6 +28,7 @@ impl BlockBuilder {
         }
     }
     #[must_use]
+    /// `false` means no space
     pub fn add(&mut self, key: KeySlice, value: &[u8]) -> bool {
         assert!(!key.is_empty(), "key must not be empty");
         // full
