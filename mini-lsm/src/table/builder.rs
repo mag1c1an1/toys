@@ -121,7 +121,7 @@ impl SsTableBuilder {
 
 #[cfg(test)]
 impl SsTableBuilder {
-    pub fn build_for_test(self, path: impl AsRef<Path>) -> Result<Self> {
+    pub fn build_for_test(self, path: impl AsRef<Path>) -> Result<SsTable> {
         self.build(0, None, path)
     }
 }

@@ -16,6 +16,7 @@ use crossbeam_skiplist::{
 
 /// thread safe
 pub struct MemTable {
+    // more format
     pub(crate) map: SkipMap<KeyBytes, Bytes>,
     wal: Option<Wal>,
     id: usize,
@@ -321,4 +322,7 @@ mod tests {
             assert!(!iter.is_valid());
         }
     }
+
+    #[test]
+    fn test_merge_1() {}
 }
