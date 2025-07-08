@@ -1,0 +1,9 @@
+app: 
+    flink run-application --target kubernetes-application \
+    -c WordCount \
+    -Dkubernetes.cluster-id=my-first-application-cluster \
+    -Dkubernetes.container.image.ref=flink-love:0.1 \
+    local:///opt/flink/usrlib/first-love-1.0-SNAPSHOT.jar
+
+del:
+    kubectl delete deployment my-first-application-cluster 
