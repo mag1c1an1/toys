@@ -1,0 +1,20 @@
+set dotenv-load
+
+run: 
+    cargo run
+
+test:
+    cargo test --  --nocapture  
+
+gen_data:
+    python3 ./tools.py
+
+reset_bucket:
+    mcli rb myio/jiax --force
+    mcli mb myio/jiax
+
+minio:
+    docker run -d -p 9000:9000 -p 9001:9001 -e MINIO_ROOT_USER="jiax" \
+                                            -e MINIO_ROOT_PASSWORD="jiaxjiax" \
+                                            swr.cn-southwest-2.myhuaweicloud.com/dmetasoul-repo/bitnami/minio:2025.4.22-debian-12-r1 \
+                                            server .data --console-address ":9001"
