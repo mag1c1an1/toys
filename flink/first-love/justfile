@@ -1,10 +1,21 @@
 set dotenv-load
 
-app version: 
+# app version: 
+#     flink run-application --target kubernetes-application \
+#     -Dkubernetes.cluster-id=my-first-application-cluster \
+#     -Dkubernetes.container.image.ref=swr.cn-southwest-2.myhuaweicloud.com/dmetasoul-repo/flink-newbie:{{version}} \
+#     local:///opt/flink/usrlib/first-love-0.1.jar
+
+origin: 
     flink run-application --target kubernetes-application \
+    -c lake.BatchJob \
     -Dkubernetes.cluster-id=my-first-application-cluster \
-    -Dkubernetes.container.image.ref=swr.cn-southwest-2.myhuaweicloud.com/dmetasoul-repo/flink-newbie:{{version}} \
-    local:///opt/flink/usrlib/first-love-0.1.jar
+    -Dkubernetes.container.image.ref=docker.1ms.run/library/flink:1.20.1-scala_2.12-java11 \
+    -Dcontainerized.master.env.ENABLE_BUILT_IN_PLUGINS=flink-s3-fs-hadoop-1.20.1.jar \
+    -Dcontainerized.taskmanager.env.ENABLE_BUILT_IN_PLUGINS=flink-s3-fs-hadoop-1.20.1.jar \
+    -Dkubernetes.artifacts.local-upload-enabled=true \
+    -Dkubernetes.artifacts.local-upload-target=s3://dmetasoul-bucket/jiax/target \
+    local:///home/jiax/toys/flink/first-love/target/first-love-0.1.jar
 
 del:
     kubectl delete deployment my-first-application-cluster 
@@ -19,7 +30,10 @@ logs:
     kubectl get pods | awk '$1 ~ /app/ {print $1}' |  awk '!(/task/ || /job/)' | xargs kubectl logs 
 
 proxy:
-    kubectl get pods | awk '$1 ~ /app/ {print $1}' | awk '!(/task/ || /job/)' | xargs -I {} kubectl port-forward {} 8992:8081
+    kubectl port-forward service/my-first-application-cluster-rest 8081
 
 ls:
-    aws s3 ls s3://dmetasoul-bucket/
+    aws s3 ls s3://dmetasoul-bucket/jiax/target/
+
+rm:
+    aws s3 rm s3://dmetasoul-bucket/jiax/target/first-love-0.1.jar

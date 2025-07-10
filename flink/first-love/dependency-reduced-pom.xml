@@ -86,11 +86,6 @@
                   </excludes>
                 </filter>
               </filters>
-              <transformers>
-                <transformer>
-                  <mainClass>lake.BatchJob</mainClass>
-                </transformer>
-              </transformers>
             </configuration>
           </execution>
         </executions>

@@ -38,6 +38,7 @@ import org.apache.flink.api.common.functions.FilterFunction;
         // 输出结果到控制台
         filtered.print();
         
+        throw new Exception("?");
         // env.execute("Flink Batch Example");
     }
         }
