@@ -1,6 +1,6 @@
 use color_eyre::eyre::Result;
 use crossterm::event::{self, Event};
-use opendal::{BlockingOperator, Builder, Operator, services};
+use opendal::{Operator, services};
 use ratatui::{DefaultTerminal, Frame};
 use std::env;
 
