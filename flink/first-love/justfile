@@ -33,7 +33,7 @@ proxy:
     kubectl port-forward service/my-first-application-cluster-rest 8081
 
 ls:
-    aws s3 ls s3://dmetasoul-bucket/jiax/target/
+    mcli ls hwoss/dmetasoul-bucket/jiax/target
 
 rm:
-    aws s3 rm s3://dmetasoul-bucket/jiax/target/first-love-0.1.jar
+    mcli rm hwoss/dmetasoul-bucket/jiax/target/first-love-0.1.jar
