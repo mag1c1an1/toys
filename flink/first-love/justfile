@@ -8,13 +8,14 @@ set dotenv-load
 
 origin: 
     flink run-application --target kubernetes-application \
-    -c lake.BatchJob \
+    --class lake.BatchJob \
     -Dkubernetes.cluster-id=my-first-application-cluster \
-    -Dkubernetes.container.image.ref=docker.1ms.run/library/flink:1.20.1-scala_2.12-java11 \
+    -Dkubernetes.container.image.ref=swr.cn-southwest-2.myhuaweicloud.com/dmetasoul-repo/flink:1.20.1-scala_2.12-java11 \
     -Dcontainerized.master.env.ENABLE_BUILT_IN_PLUGINS=flink-s3-fs-hadoop-1.20.1.jar \
     -Dcontainerized.taskmanager.env.ENABLE_BUILT_IN_PLUGINS=flink-s3-fs-hadoop-1.20.1.jar \
     -Dkubernetes.artifacts.local-upload-enabled=true \
     -Dkubernetes.artifacts.local-upload-target=s3://dmetasoul-bucket/jiax/target \
+    -Dkubernetes.artifacts.local-upload-overwrite=true \
     local:///home/jiax/toys/flink/first-love/target/first-love-0.1.jar
 
 del:
