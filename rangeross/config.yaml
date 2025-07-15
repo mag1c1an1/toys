@@ -1,0 +1,5 @@
+endpoint: http://localhost:9000
+id: jiax
+key: jiaxjiax
+bucket: dmetasoul-bucket
+region: "auto"

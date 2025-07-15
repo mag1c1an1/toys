@@ -15,6 +15,8 @@ use ratatui::{
 };
 use std::{borrow::Cow, env, io::stdout, path::PathBuf, vec};
 
+mod app;
+
 #[derive(Parser, Debug)]
 struct Args {
     #[arg(default_value_t = String::from(""))]
@@ -121,6 +123,7 @@ impl App {
 #[tokio::main]
 async fn main() -> Result<()> {
     color_eyre::install()?;
+    env_logger::init();
     let args = Args::parse();
 
     let mut app = App::try_new(&args.path).await?;
@@ -273,14 +276,21 @@ fn ui(frame: &mut Frame, app: &App) {
 
 #[cfg(test)]
 mod tests {
+    use opendal::services::S3;
     use url::Url;
 
     use crate::App;
 
     #[tokio::test]
     async fn list_test() {
-        let app = App::try_new("a").await.unwrap();
-        let arr = app.op.list("a/").await.unwrap();
+        //    let op = S3::default()
+        //    .access_key_id("")
+    }
+
+    #[tokio::test]
+    async fn app_test() {
+        let app = App::try_new("").await.unwrap();
+        let arr = app.op.list("").await.unwrap();
         for e in arr {
             println!("{}", e.name())
         }

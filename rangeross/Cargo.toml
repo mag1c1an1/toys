@@ -3,14 +3,37 @@ name = "rangeross"
 version = "0.1.0"
 edition = "2024"
 
+
 [dependencies]
-clap = { version = "4.5.41", features = ["derive"] }
 color-eyre = "0.6.5"
 crossterm = "0.29.0"
-opendal = { version = "0.53.3", default-features = true, features = [
-    "services-s3",
-    "layers-blocking",
-] }
 ratatui = "0.29.0"
-tokio = { version = "1", features = ["full"] }
 url = "2.5.4"
+serde_yaml = "0.9"
+log = "0.4.27"
+env_logger = "0.11.8"
+
+
+[dependencies.clap]
+version = "4.5.41"
+features = [ "derive" ]
+
+
+[dependencies.opendal]
+version = "0.53.3"
+default-features = true
+features = [ "services-s3", "layers-blocking" ]
+
+
+[dependencies.tokio]
+version = "1"
+features = [ "full" ]
+
+
+[dependencies.serde]
+version = "1.0"
+features = [ "derive" ]
+
+
+[dev-dependencies]
+test-log = "0.2"
